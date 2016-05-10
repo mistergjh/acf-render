@@ -28,12 +28,21 @@ class AcfRender {
     $this->field = $field;
   }
 
-  public function setTemplate( $template ) {
-    $className = 'AcfRenderTemplate' . ucfirst( $template );
-    require_once( ACF_RENDER_PLUGIN_DIR . 'src/templates/' . $className . '.php');
+  public function setTemplate( $templateName ) {
+    $templateClassName = 'AcfRenderTemplate' . ucfirst( $templateName );
+    $templatePath = ACF_RENDER_PLUGIN_DIR . 'src/templates/' . $templateClassName . '.php';
 
-    $this->template = new $className;
+    // check if template actually exists
+    if( !file_exists ( $templatePath  )) {
+      $templateClassName = 'AcfRenderTemplateText';
+      $templatePath = ACF_RENDER_PLUGIN_DIR . 'src/templates/' . $templateClassName . '.php';
+    }
+
+    require_once( $templatePath );
+
+    $this->template = new $templateClassName;
     $this->template->setField( $this->field );
+    $this->template->setMarkupTemplate( $templateName );
   }
 
   public function setOption( $option, $setting ) {

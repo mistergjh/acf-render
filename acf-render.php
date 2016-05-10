@@ -58,9 +58,9 @@ class ACFRenderPlugin {
     // render field
     $r = new AcfRender;
     $r->setField( $field );
-    $r->setTemplate( $this->selectFieldTemplate( $params ) );
+    $r->setTemplate( $this->selectFieldTemplate( $params ));
     return $r->render();
-    
+
   }
 
   /*
@@ -69,13 +69,7 @@ class ACFRenderPlugin {
   private function selectFieldTemplate( $params ) {
     $defaultFieldTemplate = 'text';
     if( array_key_exists( 'template', $params )){
-
-      // check if template actually exists
-      $className = 'AcfRenderTemplate' . ucfirst( $template );
-      if( file_exists ( ACF_RENDER_PLUGIN_DIR . 'src/templates/' . $className . '.php' ) ) {
-        return $params['template'];
-      }
-
+      return $params['template'];
     }
     return $defaultFieldTemplate;
   }

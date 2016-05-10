@@ -7,6 +7,7 @@ Base class for rendering ACF fields using templates
 class AcfRenderTemplate {
 
   public $field;
+  public $markupTemplate;
 
   public function __construct() {
 
@@ -16,13 +17,17 @@ class AcfRenderTemplate {
     return 'text';
   }
 
+  public function setMarkupTemplate( $markupTemplateName ) {
+    $this->markupTemplate = $markupTemplateName;
+  }
+
   public function render() {
 
     $view = $this;
     $fields = $this->field;
 
     ob_start();
-    include( ACF_RENDER_PLUGIN_DIR . 'templates/' . $this->getTemplateName() . '.php' );
+    include( ACF_RENDER_PLUGIN_DIR . 'templates/' . $this->markupTemplate . '.php' );
     $content = ob_get_contents();
     ob_end_clean();
     return $content;

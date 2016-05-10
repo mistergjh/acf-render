@@ -54,4 +54,8 @@ class Acf_Render_Template {
     return $content;
   }
 
+  public function renderFieldValueRaw( $field ) {
+    print $field->value;
+  }
+
 }

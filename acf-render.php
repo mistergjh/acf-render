@@ -21,6 +21,12 @@ class ACFRender {
   }
 
   public function acfGroupShortcode( $params ) {
+
+    // check if name exists
+    if( !is_array( $params ) || !array_key_exists( 'name', $params )){
+      return false;
+    }
+
     $rt = new Acf_Render_Template;
     $group = $this->getAcfGroupByTitle( $params['name'] );
     $fields = $this->getAcfFieldsByGroup( $group['key'] );
@@ -30,12 +36,39 @@ class ACFRender {
   }
 
   public function acfFieldShortcode( $params ) {
-    $group = $this->getAcfGroupByTitle( "Property Basics" );
+
+    // check if name exists
+    if( !is_array( $params ) || !array_key_exists( 'name', $params )){
+      return false;
+    }
+
+    // get field render object
+    if( array_key_exists( 'post', $params )){
+      $field = $this->getAcfField( $params['name'], $params['post'] );
+    } else {
+      $field = $this->getAcfField( $params['name'] );
+    }
+
     $rt = new Acf_Render_Template;
-    $field = $this->getAcfField( $params['name'] );
     $rt->setFields( $field );
-    $rt->template = 'single-field';
+
+
+    $rt->template = $this->selectFieldTemplate( $params );
     return $rt->render();
+  }
+
+  /*
+   *
+   * TO DO:
+   * - check if template actually exists
+   * -
+   */
+  private function selectFieldTemplate( $params ) {
+    $defaultFieldTemplate = 'single-field';
+    if( array_key_exists( 'template', $params )){
+      return $params['template'];
+    }
+    return $defaultFieldTemplate;
   }
 
   public function getAcfGroupByTitle( $title ) {
@@ -47,10 +80,15 @@ class ACFRender {
     return false;
   }
 
-  public function getAcfField( $fieldName ) {
-    global $post;
-    $fieldObjects = get_field_objects();
-    $fieldValue = get_field( $fieldName, $post->ID );
+  public function getAcfField( $fieldName, $postID ) {
+
+    if( !$postID ) {
+      global $post;
+      $postID = $post->ID;
+    }
+
+    $fieldObjects = get_field_objects( $postID );
+    $fieldValue = get_field( $fieldName, $postID );
     $fo = $fieldObjects[ $fieldName ];
     return Acf_Field_Instance::make( $fo, $fieldValue );
   }

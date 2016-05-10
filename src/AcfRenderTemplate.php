@@ -58,4 +58,8 @@ class AcfRenderTemplate {
     print $field->value;
   }
 
+  public function getFieldValue( $field ) {
+    return $field->value;
+  }
+
 }

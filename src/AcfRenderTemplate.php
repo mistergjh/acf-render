@@ -6,28 +6,31 @@ Base class for rendering ACF fields using templates
 
 class AcfRenderTemplate {
 
-  public $fields;
-  public $template;
+  public $field;
 
   public function __construct() {
 
   }
 
+  public function getTemplateName() {
+    return 'text';
+  }
+
   public function render() {
 
     $view = $this;
-    $fields = $this->fields;
+    $fields = $this->field;
 
     ob_start();
-    include( ACF_RENDER_PLUGIN_DIR . 'templates/' . $this->template . '.php' );
+    include( ACF_RENDER_PLUGIN_DIR . 'templates/' . $this->getTemplateName() . '.php' );
     $content = ob_get_contents();
     ob_end_clean();
     return $content;
 
   }
 
-  public function setFields( $fields ) {
-    $this->fields = $fields;
+  public function setField( $field ) {
+    $this->field = $field;
   }
 
   public function getInfoTableRow( $field ) {

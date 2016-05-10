@@ -8,18 +8,32 @@ class AcfRender {
 
   private $type;
   private $template;
+  private $field;
+  private $options;
 
-  public function __construct() {
+  public function __construct( $field = false ) {
     $this->setType( 'field' );
-    $this->setTemplate( 'text' );
+    if( $field ) {
+      $this->setField( $field );
+      $this->setTemplate( 'text' );
+    }
   }
 
   public function setType( $type ) {
-    $this->type = new AcfRenderType . strtoupper( $template );
+    $className = 'AcfRenderType' . ucfirst( $type );
+    $this->type = new $className;
+  }
+
+  public function setField( $field ) {
+    $this->field = $field;
   }
 
   public function setTemplate( $template ) {
-    $this->template = new AcfRenderTemplate . strtoupper( $template );
+    $className = 'AcfRenderTemplate' . ucfirst( $template );
+    require_once( ACF_RENDER_PLUGIN_DIR . 'src/templates/' . $className . '.php');
+
+    $this->template = new $className;
+    $this->template->setField( $this->field );
   }
 
   public function setOption( $option, $setting ) {
@@ -27,7 +41,7 @@ class AcfRender {
   }
 
   public function render() {
-    $this->template->render();
+    return $this->template->render();
   }
 
 }

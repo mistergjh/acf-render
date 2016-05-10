@@ -15,6 +15,7 @@ define('ACF_RENDER_TEMPLATES_DIR', plugin_dir_url( __FILE__ ) . 'templates/');
 class ACFRenderPlugin {
 
   public function __construct() {
+    require( ACF_RENDER_PLUGIN_DIR . 'src/AcfRender.php');
     require( ACF_RENDER_PLUGIN_DIR . 'src/AcfRenderType.php');
     require( ACF_RENDER_PLUGIN_DIR . 'src/AcfRenderTemplate.php');
     require( ACF_RENDER_PLUGIN_DIR . 'src/AcfRenderField.php');
@@ -32,6 +33,7 @@ class ACFRenderPlugin {
     }
 
     $rt = new AcfRenderTemplate;
+
     $group = $this->getAcfGroupByTitle( $params['name'] );
     $fields = $this->getAcfFieldsByGroup( $group['key'] );
     $rt->setFields( $fields );
@@ -46,31 +48,34 @@ class ACFRenderPlugin {
       return false;
     }
 
-    // get field render object
+    // get field
     if( array_key_exists( 'post', $params )){
       $field = $this->getAcfField( $params['name'], $params['post'] );
     } else {
       $field = $this->getAcfField( $params['name'] );
     }
 
-    $rt = new AcfRenderTemplate;
-    $rt->setFields( $field );
-
-
-    $rt->template = $this->selectFieldTemplate( $params );
-    return $rt->render();
+    // render field
+    $r = new AcfRender;
+    $r->setField( $field );
+    $r->setTemplate( $this->selectFieldTemplate( $params ) );
+    return $r->render();
+    
   }
 
   /*
    *
-   * TO DO:
-   * - check if template actually exists
-   * -
    */
   private function selectFieldTemplate( $params ) {
     $defaultFieldTemplate = 'text';
     if( array_key_exists( 'template', $params )){
-      return $params['template'];
+
+      // check if template actually exists
+      $className = 'AcfRenderTemplate' . ucfirst( $template );
+      if( file_exists ( ACF_RENDER_PLUGIN_DIR . 'src/templates/' . $className . '.php' ) ) {
+        return $params['template'];
+      }
+
     }
     return $defaultFieldTemplate;
   }

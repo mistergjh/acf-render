@@ -11,11 +11,14 @@
 define('ACF_RENDER_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('ACF_RENDER_PLUGIN_URL', plugin_dir_url( __FILE__ ));
 
-class ACFRender {
+class ACFRenderPlugin {
 
   public function __construct() {
-    require( ACF_RENDER_PLUGIN_DIR . 'src/Acf_Field.php');
-    require( ACF_RENDER_PLUGIN_DIR . 'src/Acf_Render_Template.php');
+    require( ACF_RENDER_PLUGIN_DIR . 'src/AcfRenderType.php');
+    require( ACF_RENDER_PLUGIN_DIR . 'src/AcfRenderTemplate.php');
+    require( ACF_RENDER_PLUGIN_DIR . 'src/AcfRenderField.php');
+    require( ACF_RENDER_PLUGIN_DIR . 'src/types/AcfRenderTypeField.php');
+    require( ACF_RENDER_PLUGIN_DIR . 'src/types/AcfRenderTypeFieldGroup.php');
     add_shortcode('ACFGroup', array( $this, 'acfGroupShortcode'));
     add_shortcode('ACFField', array( $this, 'acfFieldShortcode'));
   }
@@ -27,7 +30,7 @@ class ACFRender {
       return false;
     }
 
-    $rt = new Acf_Render_Template;
+    $rt = new AcfRenderTemplate;
     $group = $this->getAcfGroupByTitle( $params['name'] );
     $fields = $this->getAcfFieldsByGroup( $group['key'] );
     $rt->setFields( $fields );
@@ -49,7 +52,7 @@ class ACFRender {
       $field = $this->getAcfField( $params['name'] );
     }
 
-    $rt = new Acf_Render_Template;
+    $rt = new AcfRenderTemplate;
     $rt->setFields( $field );
 
 
@@ -90,7 +93,7 @@ class ACFRender {
     $fieldObjects = get_field_objects( $postID );
     $fieldValue = get_field( $fieldName, $postID );
     $fo = $fieldObjects[ $fieldName ];
-    return Acf_Field_Instance::make( $fo, $fieldValue );
+    return AcfRenderField::make( $fo, $fieldValue );
   }
 
   public function getAcfFieldsByGroup( $groupID ) {
@@ -100,7 +103,7 @@ class ACFRender {
     foreach( $groupFields as $gf ) {
       $fieldName = $gf['name']; // this is the field name being test such as "bedrooms"
       if( array_key_exists( $fieldName, $postFields)) {
-        $fieldsInGroup[] = Acf_Field_Instance::make( $gf, $postFields[ $fieldName ] );
+        $fieldsInGroup[] = AcfRenderField::make( $gf, $postFields[ $fieldName ] );
       }
     }
     return $fieldsInGroup;
@@ -108,7 +111,7 @@ class ACFRender {
 
 }
 
-new ACFRender;
+new ACFRenderPlugin;
 
 
 /*

@@ -4,7 +4,7 @@
 Base class for rendering ACF fields using templates
  */
 
-class Acf_Render_Template {
+class AcfRenderTemplate {
 
   public $fields;
   public $template;

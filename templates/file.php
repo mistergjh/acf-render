@@ -1,3 +1,3 @@
 <div class="acf-field col-md-12">
-  <?php print $view->getFieldValue( $fields ); ?>
+  <a href="<?php echo $view->getUrl(); ?>"><?php echo $view->getFilename(); ?></a>
 </div>

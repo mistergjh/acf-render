@@ -83,25 +83,92 @@ class AcfRender {
     return apply_filters( 'acf-render-template-register', $this->templateRegistry );
   }
 
-  public function getRegisteredTemplates() {
+  private function getRegisteredTemplates() {
     return $this->templateRegistry;
   }
 
-  public function setTemplate( $templateName ) {
-    $templateClassName = 'AcfRenderTemplate' . ucfirst( $templateName );
-    $templatePath = ACF_RENDER_PLUGIN_DIR . 'src/templates/' . $templateClassName . '.php';
+  private function loadTemplate( $templateKey ) {
+    $templateSettings = $this->getTemplateSettings( $templateKey );
+    return $this->initTemplate( $templateKey, $templateSettings );
+  }
 
-    // check if template actually exists
-    if( !file_exists ( $templatePath  )) {
-      $templateClassName = 'AcfRenderTemplateText';
-      $templatePath = ACF_RENDER_PLUGIN_DIR . 'src/templates/' . $templateClassName . '.php';
+  public function getTemplateSettings( $templateKey ) {
+    $templateRegistry = $this->getRegisteredTemplates();
+    $templateSettings = $templateRegistry[$templateKey];
+    $templateSettings['key'] = $templateKey; // add key so it's available later
+    return $templateSettings;
+  }
+
+  private function templateNameFromKey( $templateKey ) {
+    $name = ucwords( $templateKey );
+    return str_replace('_', ' ', $name);
+  }
+
+  private function templateClassNameFromKey( $templateKey ) {
+    $className = ucwords( $templateKey );
+    $className = str_replace('_', '', $className);
+    $className = 'AcfRenderTemplate' . $className;
+    return $className;
+  }
+
+  private function templateLocation( $templateSettings ) {
+    if( key_exists('location', $templateSettings) ) {
+      return $templateSettings['location'];
     }
+    return ACF_RENDER_TEMPLATE_DIR;
+  }
 
+  private function includeTemplateClassFile( $templatePath ) {
+    // check if template class file exists
+    if( !file_exists ( $templatePath  )) {
+      $templateClassName = 'AcfRenderTemplateDefault';
+      $templatePath = ACF_RENDER_TEMPLATE_DIR . 'default/' . $templateClassName . '.php';
+    }
     require_once( $templatePath );
+  }
 
-    $this->template = new $templateClassName;
+  private function templateName( $templateSettings ) {
+    if( key_exists('name', $templateSettings) ) {
+      return $templateSettings['name'];
+    }
+    return $this->templateNameFromKey( $templateSettings['key'] );
+  }
+
+  private function templateFilename( $templateSettings ) {
+    if( key_exists('filename', $templateSettings) ) {
+      return $templateSettings['filename'];
+    }
+    return $templateSettings['key'];
+  }
+
+  private function initTemplate( $templateKey, $templateSettings ) {
+    $templateClassName = $this->templateClassNameFromKey( $templateKey );
+    $templatePath = $this->templateLocation( $templateSettings ) . $templateKey . '/' . $templateClassName . '.php';
+    $this->includeTemplateClassFile( $templatePath );
+    $template = new $templateClassName;
+    $template->key = $templateKey;
+    $template->location = $this->templateLocation( $templateSettings );
+    $template->name = $this->templateName( $templateSettings );
+    $template->filename = $this->templateFilename( $templateSettings );
+
+    var_dump( $template );
+    die();
+
+    return $template;
+  }
+
+  public function setTemplateFilename() {
+
+  }
+
+  public function setTemplate( $templateKey ) {
+    $this->template = $this->loadTemplate( $templateKey );
     $this->template->setField( $this->field );
-    $this->template->setMarkupTemplate( $templateName );
+
+    var_dump( $this->template );
+    die();
+
+
   }
 
   public function setOption( $option, $setting ) {

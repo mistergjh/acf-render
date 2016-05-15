@@ -17,6 +17,7 @@ class AcfRender {
       $this->setField( $field );
       $this->setTemplate( 'text' );
     }
+    $this->registerTemplates();
   }
 
   public function setType( $type ) {
@@ -51,9 +52,6 @@ class AcfRender {
       'image' => array(
         'field_types'     => array('image'),
       ),
-      'info_table' => array(
-        'field_types'     => array('group'),
-      ),
       'number' => array(
         'field_types'     => array('number'),
       ),
@@ -73,10 +71,6 @@ class AcfRender {
         'field_types'     => array('select'),
       ),
       'text' => array(
-        'name'            => 'Text',
-        'location'        => ACF_RENDER_TEMPLATE_DIR,
-        'filename'        => 'text',
-        'file_extension'  => ACF_RENDER_TEMPLATE_FILE_EXT,
         'field_types'     => array('text'),
       ),
       'true_false' => array(

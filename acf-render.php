@@ -23,8 +23,6 @@ class ACFRenderPlugin {
     require( ACF_RENDER_PLUGIN_DIR . 'src/types/AcfRenderTypeField.php');
     require( ACF_RENDER_PLUGIN_DIR . 'src/types/AcfRenderTypeFieldGroup.php');
     add_shortcode('ACFField', array( $this, 'acfFieldShortcode'));
-    $this->registerTemplates();
-    var_dump( $this->getRegisteredTemplates() );
   }
 
   public function acfFieldShortcode( $params ) {

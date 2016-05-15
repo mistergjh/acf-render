@@ -1,6 +1,6 @@
-<div class="acf-field acf-field-true-false col-md-12">
+<div class="acf-field acf-field-$templatese col-md-12">
   <?php
-    if( $view->getFieldValue( $fields ) ) {
+    if( $template->getFieldValue( $field ) ) {
       print 'true';
     } else {
       print 'false';

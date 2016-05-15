@@ -1,7 +1,7 @@
 <div class="acf-field col-md-12">
   <?php
 
-    $post_object = $view->getFieldValue( $fields );
+    $post_object = $template->getFieldValue( $field );
 
     if( $post_object ):
 

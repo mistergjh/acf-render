@@ -8,10 +8,10 @@ class AcfRenderTemplate {
 
   public $key;
   public $name;
-  public $field;
   public $location;
   public $filename;
   public $singleFile = false; // is template a single file or directory
+  private $field = false;
 
   public function __construct() {
 
@@ -30,8 +30,7 @@ class AcfRenderTemplate {
 
   public function render() {
 
-    $view = $this;
-    $fields = $this->field;
+    $template = $this;
 
     if( !file_exists( $this->getTemplateFilePath() )) {
       return 'Invalid template name. Template not found.';
@@ -46,15 +45,15 @@ class AcfRenderTemplate {
   }
 
   public function setField( $field ) {
-    $this->field = $field;
+    $this->field =  $field;
   }
 
-  public function renderFieldValueRaw( $field ) {
-    print $field->value;
+  public function renderFieldValueRaw() {
+    print $this->field->value;
   }
 
-  public function getFieldValue( $field ) {
-    return $field->value;
+  public function getFieldValue() {
+    return $this->field->value;
   }
 
 }

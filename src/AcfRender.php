@@ -12,7 +12,6 @@ class AcfRender {
   private $options;
 
   public function __construct( $field = false ) {
-    $this->setType( 'field' );
     if( $field ) {
       $this->setField( $field );
       $this->setTemplate( 'text' );
@@ -20,13 +19,19 @@ class AcfRender {
     $this->registerTemplates();
   }
 
-  public function setType( $type ) {
-    $className = 'AcfRenderType' . ucfirst( $type );
-    $this->type = new $className;
-  }
+  public function setField( $fieldName, $postID ) {
 
-  public function setField( $field ) {
-    $this->field = $field;
+    if( !$postID ) {
+      global $post;
+      $postID = $post->ID;
+    }
+
+    $fieldObjects = get_field_objects( $postID );
+    $fieldValue = get_field( $fieldName, $postID );
+    $fo = $fieldObjects[ $fieldName ];
+    $this->field = AcfRenderField::make( $fo, $fieldValue );
+
+    return $this->field;
   }
 
   private function registerTemplates() {
@@ -161,17 +166,9 @@ class AcfRender {
     return $template;
   }
 
-  public function setTemplateFilename() {
-
-  }
-
   public function setTemplate( $templateKey ) {
     $this->template = $this->loadTemplate( $templateKey );
     $this->template->setField( $this->field );
-  }
-
-  public function setOption( $option, $setting ) {
-
   }
 
   public function render() {

@@ -6,6 +6,6 @@
 .acf-color-display {
   min-width: 25px;
   min-height: 25px;
-  background-color: <?php print $view->getFieldValue( $fields ); ?>;
+  background-color: <?php print $template->getFieldValue( $field ); ?>;
 }
 </style>

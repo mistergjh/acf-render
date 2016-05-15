@@ -17,11 +17,8 @@ class ACFRenderPlugin {
 
   public function __construct() {
     require( ACF_RENDER_PLUGIN_DIR . 'src/AcfRender.php');
-    require( ACF_RENDER_PLUGIN_DIR . 'src/AcfRenderType.php');
     require( ACF_RENDER_PLUGIN_DIR . 'src/AcfRenderTemplate.php');
     require( ACF_RENDER_PLUGIN_DIR . 'src/AcfRenderField.php');
-    require( ACF_RENDER_PLUGIN_DIR . 'src/types/AcfRenderTypeField.php');
-    require( ACF_RENDER_PLUGIN_DIR . 'src/types/AcfRenderTypeFieldGroup.php');
     add_shortcode('ACFField', array( $this, 'acfFieldShortcode'));
   }
 
@@ -32,16 +29,13 @@ class ACFRenderPlugin {
       return false;
     }
 
-    // get field
-    if( array_key_exists( 'post', $params )){
-      $field = $this->getAcfField( $params['name'], $params['post'] );
-    } else {
-      $field = $this->getAcfField( $params['name'] );
-    }
-
     // render field
     $r = new AcfRender;
-    $r->setField( $field );
+    if( array_key_exists( 'post', $params )){
+      $r->setField( $params['name'], $params['post'] );
+    } else {
+      $r->setField( $params['name'] );
+    }
     $r->setTemplate( $this->selectFieldTemplate( $params ));
     return $r->render();
 
@@ -56,19 +50,6 @@ class ACFRenderPlugin {
       return $params['template'];
     }
     return $defaultFieldTemplate;
-  }
-
-  public function getAcfField( $fieldName, $postID ) {
-
-    if( !$postID ) {
-      global $post;
-      $postID = $post->ID;
-    }
-
-    $fieldObjects = get_field_objects( $postID );
-    $fieldValue = get_field( $fieldName, $postID );
-    $fo = $fieldObjects[ $fieldName ];
-    return AcfRenderField::make( $fo, $fieldValue );
   }
 
 }

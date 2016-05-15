@@ -45,7 +45,7 @@ class ACFRenderPlugin {
    *
    */
   private function selectFieldTemplate( $params ) {
-    $defaultFieldTemplate = 'text';
+    $defaultFieldTemplate = 'default';
     if( array_key_exists( 'template', $params )){
       return $params['template'];
     }

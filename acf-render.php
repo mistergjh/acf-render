@@ -18,10 +18,10 @@ class ACFRenderPlugin {
     require( ACF_RENDER_PLUGIN_DIR . 'src/AcfRender.php');
     require( ACF_RENDER_PLUGIN_DIR . 'src/AcfRenderTemplate.php');
     require( ACF_RENDER_PLUGIN_DIR . 'src/AcfRenderField.php');
-    add_shortcode('ACFField', array( $this, 'acfFieldShortcode'));
+    add_shortcode('acf-render', array( $this, 'acfRenderShortcode'));
   }
 
-  public function acfFieldShortcode( $params ) {
+  public function acfRenderShortcode( $params ) {
 
     // check if name exists
     if( !is_array( $params ) || !array_key_exists( 'name', $params )){

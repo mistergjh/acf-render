@@ -10,7 +10,8 @@
 
 define('ACF_RENDER_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('ACF_RENDER_PLUGIN_URL', plugin_dir_url( __FILE__ ));
-define('ACF_RENDER_TEMPLATES_DIR', plugin_dir_url( __FILE__ ) . 'templates/');
+define('ACF_RENDER_TEMPLATE_DIR', plugin_dir_url( __FILE__ ) . 'templates/');
+define('ACF_RENDER_TEMPLATE_FILE_EXT', 'php');
 
 class ACFRenderPlugin {
 
@@ -21,24 +22,9 @@ class ACFRenderPlugin {
     require( ACF_RENDER_PLUGIN_DIR . 'src/AcfRenderField.php');
     require( ACF_RENDER_PLUGIN_DIR . 'src/types/AcfRenderTypeField.php');
     require( ACF_RENDER_PLUGIN_DIR . 'src/types/AcfRenderTypeFieldGroup.php');
-    add_shortcode('ACFGroup', array( $this, 'acfGroupShortcode'));
     add_shortcode('ACFField', array( $this, 'acfFieldShortcode'));
-  }
-
-  public function acfGroupShortcode( $params ) {
-
-    // check if name exists
-    if( !is_array( $params ) || !array_key_exists( 'name', $params )){
-      return false;
-    }
-
-    $rt = new AcfRenderTemplate;
-
-    $group = $this->getAcfGroupByTitle( $params['name'] );
-    $fields = $this->getAcfFieldsByGroup( $group['key'] );
-    $rt->setFields( $fields );
-    $rt->template = 'info-table';
-    return $rt->render();
+    $this->registerTemplates();
+    var_dump( $this->getRegisteredTemplates() );
   }
 
   public function acfFieldShortcode( $params ) {
@@ -74,15 +60,6 @@ class ACFRenderPlugin {
     return $defaultFieldTemplate;
   }
 
-  public function getAcfGroupByTitle( $title ) {
-    $post = get_page_by_title( $title, OBJECT, "acf-field-group" );
-    $group = _acf_get_field_group_by_key( $post->post_name );
-    if( $group ) {
-      return $group;
-    }
-    return false;
-  }
-
   public function getAcfField( $fieldName, $postID ) {
 
     if( !$postID ) {
@@ -96,27 +73,6 @@ class ACFRenderPlugin {
     return AcfRenderField::make( $fo, $fieldValue );
   }
 
-  public function getAcfFieldsByGroup( $groupID ) {
-    $groupFields = acf_get_fields( $groupID );
-    $postFields = get_fields();
-    $fieldsInGroup = array();
-    foreach( $groupFields as $gf ) {
-      $fieldName = $gf['name']; // this is the field name being test such as "bedrooms"
-      if( array_key_exists( $fieldName, $postFields)) {
-        $fieldsInGroup[] = AcfRenderField::make( $gf, $postFields[ $fieldName ] );
-      }
-    }
-    return $fieldsInGroup;
-  }
-
 }
 
 new ACFRenderPlugin;
-
-
-/*
-
-Shortcode Field outputs just the field data
-  Optional renderingEngine adds prefix/suffix code
-
- */

@@ -28,6 +28,71 @@ class AcfRender {
     $this->field = $field;
   }
 
+  private function registerTemplates() {
+    $this->templateRegistry = array(
+      'checkbox' => array(
+        'field_types'     => array('checkbox'),
+      ),
+      'choice' => array(
+        'field_types'     => array('checkbox, select, boolean, true_false'),
+      ),
+      'color' => array(
+        'field_types'     => array('color'),
+      ),
+      'date' => array(
+        'field_types'     => array('date'),
+      ),
+      'date' => array(
+        'field_types'     => array('date'),
+      ),
+      'html' => array(
+        'field_types'     => array('html'),
+      ),
+      'image' => array(
+        'field_types'     => array('image'),
+      ),
+      'info_table' => array(
+        'field_types'     => array('group'),
+      ),
+      'number' => array(
+        'field_types'     => array('number'),
+      ),
+      'page' => array(
+        'field_types'     => array('page_object'),
+      ),
+      'page_link' => array(
+        'field_types'     => array('page_link'),
+      ),
+      'post_object' => array(
+        'field_types'     => array('post_object'),
+      ),
+      'select' => array(
+        'field_types'     => array('select'),
+      ),
+      'select' => array(
+        'field_types'     => array('select'),
+      ),
+      'text' => array(
+        'name'            => 'Text',
+        'location'        => ACF_RENDER_TEMPLATE_DIR,
+        'filename'        => 'text',
+        'file_extension'  => ACF_RENDER_TEMPLATE_FILE_EXT,
+        'field_types'     => array('text'),
+      ),
+      'true_false' => array(
+        'field_types'     => array('true_false'),
+      ),
+      'url' => array(
+        'field_types'     => array('url'),
+      ),
+    );
+    return apply_filters( 'acf-render-template-register', $this->templateRegistry );
+  }
+
+  public function getRegisteredTemplates() {
+    return $this->templateRegistry;
+  }
+
   public function setTemplate( $templateName ) {
     $templateClassName = 'AcfRenderTemplate' . ucfirst( $templateName );
     $templatePath = ACF_RENDER_PLUGIN_DIR . 'src/templates/' . $templateClassName . '.php';

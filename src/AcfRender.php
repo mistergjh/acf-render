@@ -119,12 +119,11 @@ class AcfRender {
   }
 
   private function includeTemplateClassFile( $templatePath ) {
-    // check if template class file exists
-    if( !file_exists ( $templatePath  )) {
-      $templateClassName = 'AcfRenderTemplateDefault';
-      $templatePath = ACF_RENDER_TEMPLATE_DIR . 'default/' . $templateClassName . '.php';
+    if( file_exists ( $templatePath  )) {
+      require_once( $templatePath );
+      return true;
     }
-    require_once( $templatePath );
+    return false;
   }
 
   private function templateName( $templateSettings ) {
@@ -144,16 +143,21 @@ class AcfRender {
   private function initTemplate( $templateKey, $templateSettings ) {
     $templateClassName = $this->templateClassNameFromKey( $templateKey );
     $templatePath = $this->templateLocation( $templateSettings ) . $templateKey . '/' . $templateClassName . '.php';
-    $this->includeTemplateClassFile( $templatePath );
+    $singleFile = false;
+
+    if( !$this->includeTemplateClassFile( $templatePath )) {
+      $templateClassName = 'AcfRenderTemplateDefault';
+      $templatePath = ACF_RENDER_TEMPLATE_DIR . 'default/' . $templateClassName . '.php';
+      $this->includeTemplateClassFile( $templatePath );
+      $singleFile = true;
+    }
+
     $template = new $templateClassName;
     $template->key = $templateKey;
     $template->location = $this->templateLocation( $templateSettings );
     $template->name = $this->templateName( $templateSettings );
     $template->filename = $this->templateFilename( $templateSettings );
-
-    var_dump( $template );
-    die();
-
+    $template->singleFile = $singleFile;
     return $template;
   }
 
@@ -164,11 +168,6 @@ class AcfRender {
   public function setTemplate( $templateKey ) {
     $this->template = $this->loadTemplate( $templateKey );
     $this->template->setField( $this->field );
-
-    var_dump( $this->template );
-    die();
-
-
   }
 
   public function setOption( $option, $setting ) {

@@ -4,6 +4,6 @@
  * Default template
  */
 
-class AcfRenderTemplateFile extends AcfRenderTemplate {
+class AcfRenderTemplateDefault extends AcfRenderTemplate {
 
 }

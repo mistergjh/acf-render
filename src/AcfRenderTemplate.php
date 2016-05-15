@@ -11,6 +11,7 @@ class AcfRenderTemplate {
   public $field;
   public $location;
   public $filename;
+  public $singleFile = false; // is template a single file or directory
 
   public function __construct() {
 
@@ -20,8 +21,11 @@ class AcfRenderTemplate {
     return 'text';
   }
 
-  public function setMarkupTemplate( $markupTemplateName ) {
-    $this->markupTemplate = $markupTemplateName;
+  private function getTemplateFilePath() {
+    if( $this->singleFile ) {
+      return $this->location . $this->filename . '.php';
+    }
+    return $this->location . $this->key . '/' . $this->filename . '.php';
   }
 
   public function render() {
@@ -29,8 +33,12 @@ class AcfRenderTemplate {
     $view = $this;
     $fields = $this->field;
 
+    if( !file_exists( $this->getTemplateFilePath() )) {
+      return 'Invalid template name. Template not found.';
+    }
+
     ob_start();
-    include( ACF_RENDER_PLUGIN_DIR . 'templates/' . $this->markupTemplate . '.php' );
+    include( $this->getTemplateFilePath() );
     $content = ob_get_contents();
     ob_end_clean();
     return $content;

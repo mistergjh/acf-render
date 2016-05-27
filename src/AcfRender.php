@@ -10,13 +10,14 @@ class AcfRender {
   private $template;
   private $field;
   private $options;
+  private $registeredTemplate;
 
   public function __construct( $field = false ) {
     if( $field ) {
       $this->setField( $field );
       $this->setTemplate( 'text' );
     }
-    $this->registerTemplates();
+    $this->registeredTemplates = $this->registerTemplates();
   }
 
   public function setField( $fieldName, $postID ) {
@@ -32,6 +33,10 @@ class AcfRender {
     $this->field = AcfRenderField::make( $fo, $fieldValue );
 
     return $this->field;
+  }
+
+  private function getRegisteredTemplate() {
+    return $this->registeredTemplates;
   }
 
   private function registerTemplates() {

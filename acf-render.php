@@ -42,7 +42,7 @@ class ACFRenderPlugin {
     if( array_key_exists( 'show_label', $params )) {
       if( $params['show_label'] ) {
         $r->setShowLabel();
-      }    
+      }
     }
 
     return $r->render();

@@ -136,7 +136,7 @@ class AcfRender {
 
   private function templateLocation( $templateSettings ) {
     if( key_exists('location', $templateSettings) ) {
-      return $templateSettings['location'];
+      return WP_CONTENT_DIR . '/' . $templateSettings['location'];
     }
     return ACF_RENDER_TEMPLATE_DIR;
   }

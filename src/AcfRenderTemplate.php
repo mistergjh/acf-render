@@ -40,7 +40,6 @@ class AcfRenderTemplate {
   public function render() {
 
     $template = $this;
-
     if( !file_exists( $this->getTemplateFilePath() )) {
       return 'Invalid template name. Template not found.';
     }

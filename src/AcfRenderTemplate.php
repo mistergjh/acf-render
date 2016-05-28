@@ -12,6 +12,7 @@ class AcfRenderTemplate {
   public $filename;
   public $singleFile = false; // is template a single file or directory
   private $field = false;
+  private $showLabel = false;
 
   public function __construct() {
 
@@ -19,6 +20,14 @@ class AcfRenderTemplate {
 
   public function getTemplateName() {
     return 'text';
+  }
+
+  public function setShowLabel( $setting = true ) {
+    $this->showLabel = $setting;
+  }
+
+  public function showLabel() {
+    return $this->showLabel;
   }
 
   private function getTemplateFilePath() {
@@ -54,6 +63,10 @@ class AcfRenderTemplate {
 
   public function getFieldValue() {
     return $this->field->value;
+  }
+
+  public function getLabel() {
+    return $this->field->label;
   }
 
 }

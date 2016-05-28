@@ -30,14 +30,21 @@ class ACFRenderPlugin {
 
     // render field
     $r = new AcfRender;
-    if( array_key_exists( 'post', $params )){
+    if( array_key_exists( 'post', $params )) {
       $r->setField( $params['name'], $params['post'] );
     } else {
       $r->setField( $params['name'] );
     }
-    if( array_key_exists( 'template', $params )){
+    if( array_key_exists( 'template', $params )) {
       $r->setTemplate( $params['template'] );
     }
+    // show label
+    if( array_key_exists( 'show_label', $params )) {
+      if( $params['show_label'] ) {
+        $r->setShowLabel();
+      }    
+    }
+
     return $r->render();
 
   }

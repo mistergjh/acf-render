@@ -1,3 +1,12 @@
 <div class="acf-field col-md-12">
-  <?php print $template->getFieldValue( $field ); ?>
+
+  <?php if( $template->showLabel() ) : ?>
+    <div class="acf-field-label">
+      <?php print $template->getLabel(); ?>
+    </div>
+  <?php endif; ?>
+
+  <div class="acf-field-value">
+    <?php print $template->getFieldValue(); ?>
+  </div>
 </div>

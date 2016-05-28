@@ -10,7 +10,7 @@ class AcfRender {
   private $template;
   private $field;
   private $options;
-  private $registeredTemplate;
+  private $registeredTemplates;
 
   public function __construct( $field = false ) {
     if( $field ) {
@@ -35,8 +35,16 @@ class AcfRender {
     return $this->field;
   }
 
-  private function getRegisteredTemplate() {
+  private function getRegisteredTemplates() {
     return $this->registeredTemplates;
+  }
+
+  private function isTemplateRegistered( $template ) {
+    $tr = $this->getRegisteredTemplates();
+    if( key_exists( $template, $tr ) ) {
+      return true;
+    }
+    return false;
   }
 
   private function registerTemplates() {
@@ -91,10 +99,6 @@ class AcfRender {
       ),
     );
     return apply_filters( 'acf-render-template-register', $this->templateRegistry );
-  }
-
-  private function getRegisteredTemplates() {
-    return $this->templateRegistry;
   }
 
   private function loadTemplate( $templateKey ) {
@@ -176,7 +180,18 @@ class AcfRender {
     $this->template->setField( $this->field );
   }
 
+  private function setTemplateAuto() {
+    if( $this->isTemplateRegistered( $this->field->type ) ) {
+      $this->setTemplate( $this->field->type );
+    } else {
+      $this->setTemplate( 'default' );
+    }
+  }
+
   public function render() {
+    if( !$this->template ) {
+      $this->setTemplateAuto();
+    }
     return $this->template->render();
   }
 

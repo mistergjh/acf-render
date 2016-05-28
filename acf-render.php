@@ -35,20 +35,11 @@ class ACFRenderPlugin {
     } else {
       $r->setField( $params['name'] );
     }
-    $r->setTemplate( $this->selectFieldTemplate( $params ));
+    if( array_key_exists( 'template', $params )){
+      $r->setTemplate( $params['template'] );
+    }
     return $r->render();
 
-  }
-
-  /*
-   *
-   */
-  private function selectFieldTemplate( $params ) {
-    $defaultFieldTemplate = 'default';
-    if( array_key_exists( 'template', $params )){
-      return $params['template'];
-    }
-    return $defaultFieldTemplate;
   }
 
 }

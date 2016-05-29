@@ -18,6 +18,9 @@ class ACFRenderPlugin {
     require( ACF_RENDER_PLUGIN_DIR . 'src/AcfRender.php');
     require( ACF_RENDER_PLUGIN_DIR . 'src/AcfRenderTemplate.php');
     require( ACF_RENDER_PLUGIN_DIR . 'src/AcfRenderField.php');
+    require( ACF_RENDER_PLUGIN_DIR . 'src/AcfRenderTemplateDetect.php');
+
+    new AcfRenderTemplateDetect;
     add_shortcode('acf-render', array( $this, 'acfRenderShortcode'));
   }
 

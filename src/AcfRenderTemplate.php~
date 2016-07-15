@@ -19,7 +19,7 @@ class AcfRenderTemplate {
   }
 
   public function getTemplateName() {
-    return $this->name;
+    return 'text';
   }
 
   public function setShowLabel( $setting = true ) {

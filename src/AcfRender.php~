@@ -110,7 +110,7 @@ class AcfRender {
     return apply_filters( 'acf-render-template-register', $this->templateRegistry );
   }
 
-  public function loadTemplate( $templateKey ) {
+  private function loadTemplate( $templateKey ) {
     $templateSettings = $this->getTemplateSettings( $templateKey );
     return $this->initTemplate( $templateKey, $templateSettings );
   }

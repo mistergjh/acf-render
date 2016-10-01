@@ -1,7 +1,7 @@
 <?php
 /*
 	Plugin Name: ACF Render
-	Plugin URI: http://www.goldhat.ca/plugins/acf-render
+	Plugin URI: http://goldhat.ca/plugins/acf-render/
 	Description: Provides a rendering engine for ACF fields
 	Author: Joel Milne, GoldHat Development Group
 	Version: 1.1.0
@@ -19,7 +19,6 @@ class ACFRenderPlugin {
     require( ACF_RENDER_PLUGIN_DIR . 'src/AcfRenderTemplate.php');
     require( ACF_RENDER_PLUGIN_DIR . 'src/AcfRenderField.php');
     require( ACF_RENDER_PLUGIN_DIR . 'src/AcfRenderTemplateDetect.php');
-
     new AcfRenderTemplateDetect;
     add_shortcode('acf-render', array( $this, 'acfRenderShortcode'));
   }
@@ -38,15 +37,18 @@ class ACFRenderPlugin {
     } else {
       $r->setField( $params['name'] );
     }
-    if( array_key_exists( 'template', $params )) {
-      $r->setTemplate( $params['template'] );
-    }
+
+    // set template
+    $r->setTemplateByParams( $params );
+
     // show label
     if( array_key_exists( 'show_label', $params )) {
       if( $params['show_label'] ) {
         $r->setShowLabel();
       }
     }
+
+    var_dump($r);
 
     return $r->render();
 

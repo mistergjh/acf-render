@@ -184,6 +184,14 @@ class AcfRender {
     return $template;
   }
 
+  public function setTemplateByParams( $params ) {
+    if( array_key_exists( 'template', $params )) {
+      $this->setTemplate( $params['template'] );
+    } else {
+      $this->setTemplateAuto();
+    }
+  }
+
   public function setTemplate( $templateKey ) {
     $this->template = $this->loadTemplate( $templateKey );
     $this->template->setField( $this->field );
@@ -198,9 +206,6 @@ class AcfRender {
   }
 
   public function render() {
-    if( !$this->template ) {
-      $this->setTemplateAuto();
-    }
     if( $this->showLabel() ) {
       $this->template->setShowLabel();
     }

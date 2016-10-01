@@ -5,7 +5,9 @@
 	Description: Provides a rendering engine for ACF fields
 	Author: Joel Milne, GoldHat Development Group
 	Version: 1.1.0
-	Author URI: http://goldhat.ca
+	Author URI: http://goldhat.ca/
+  Text Domain: acf-render
+  License: GPLv2 or later
 */
 
 define('ACF_RENDER_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
@@ -41,12 +43,8 @@ class ACFRenderPlugin {
     // set template
     $r->setTemplateByParams( $params );
 
-    // show label
-    if( array_key_exists( 'show_label', $params )) {
-      if( $params['show_label'] ) {
-        $r->setShowLabel();
-      }
-    }
+    // set label show
+    $r->setLabelShowByParams( $params );
 
     var_dump($r);
 

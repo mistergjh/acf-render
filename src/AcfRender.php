@@ -11,7 +11,6 @@ class AcfRender {
   private $field;
   private $options;
   private $registeredTemplates;
-  private $showLabel = false;
 
   public function __construct( $field = false ) {
     if( $field ) {
@@ -21,12 +20,22 @@ class AcfRender {
     $this->registeredTemplates = $this->registerTemplates();
   }
 
-  public function setShowLabel( $setting = true ) {
-    $this->showLabel = $setting;
+  public function setLabelShowByParams( $params ) {
+    $showLabel = false;
+    if( array_key_exists( 'label', $params )) {
+      if( $params['label'] == true ) {
+        $showLabel = true;
+      }
+    }
+    $this->setShowLabel( $showLabel );
+  }
+
+  public function setShowLabel( $setting ) {
+    $this->template->showLabel = $setting;
   }
 
   public function showLabel() {
-    return $this->showLabel;
+    return $this->template->showLabel;
   }
 
   public function setField( $fieldName, $postID ) {
@@ -206,9 +215,6 @@ class AcfRender {
   }
 
   public function render() {
-    if( $this->showLabel() ) {
-      $this->template->setShowLabel();
-    }
     return $this->template->render();
   }
 

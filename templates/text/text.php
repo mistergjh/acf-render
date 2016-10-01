@@ -1,4 +1,4 @@
-<div class="acf-field col-md-12">
+<div class="acf-field acf-template-text">
 
   <?php if( $template->showLabel() ) : ?>
     <div class="acf-field-label">
@@ -9,4 +9,5 @@
   <div class="acf-field-value">
     <?php print $template->getFieldValue(); ?>
   </div>
+  
 </div>

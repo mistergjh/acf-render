@@ -11,8 +11,8 @@ class AcfRenderTemplate {
   public $location;
   public $filename;
   public $singleFile = false; // is template a single file or directory
+  public $showLabel = false;
   private $field = false;
-  private $showLabel = false;
 
   public function __construct() {
 

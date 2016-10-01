@@ -4,7 +4,7 @@
 	Plugin URI: http://www.goldhat.ca/plugins/acf-render
 	Description: Provides a rendering engine for ACF fields
 	Author: Joel Milne, GoldHat Development Group
-	Version: 1.0.0
+	Version: 1.1.0
 	Author URI: http://goldhat.ca
 */
 

@@ -11,7 +11,7 @@ class AcfRenderTemplate {
   public $location;
   public $filename;
   public $singleFile = false; // is template a single file or directory
-  public $showLabel = false;
+  public $params = array();
   private $field = false;
 
   public function __construct() {
@@ -22,12 +22,8 @@ class AcfRenderTemplate {
     return $this->name;
   }
 
-  public function setShowLabel( $setting = true ) {
-    $this->showLabel = $setting;
-  }
-
   public function showLabel() {
-    return $this->showLabel;
+    return $this->label;
   }
 
   private function getTemplateFilePath() {
@@ -40,6 +36,8 @@ class AcfRenderTemplate {
   public function render() {
 
     $template = $this;
+    $this->parseGlobalParams();
+    $this->parseParams();
     if( !file_exists( $this->getTemplateFilePath() )) {
       return 'Invalid template name. Template not found.';
     }
@@ -66,6 +64,21 @@ class AcfRenderTemplate {
 
   public function getLabel() {
     return $this->field->label;
+  }
+
+  public function parseGlobalParams() {
+    $this->parseParamLabel();
+  }
+
+  // override parseParams in template classes to handle custom params
+  public function parseParams() {}
+
+  public function parseParamLabel() {
+    if( array_key_exists('label', $this->params)) {
+      $this->label = $this->params['label'];
+    } else {
+      $this->label = false;
+    }
   }
 
 }

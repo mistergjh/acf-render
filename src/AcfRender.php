@@ -7,9 +7,10 @@
 class AcfRender {
 
   private $type;
+  private $post;
   private $template;
   private $field;
-  private $options;
+  private $params;
   private $registeredTemplates;
 
   public function __construct( $field = false ) {
@@ -20,22 +21,25 @@ class AcfRender {
     $this->registeredTemplates = $this->registerTemplates();
   }
 
-  public function setLabelShowByParams( $params ) {
-    $showLabel = false;
-    if( array_key_exists( 'label', $params )) {
-      if( $params['label'] == true ) {
-        $showLabel = true;
-      }
+  public function setPostByParams() {
+    if( array_key_exists( 'post', $this->params )) {
+      $this->post = $this->params['post'];
     }
-    $this->setShowLabel( $showLabel );
   }
 
-  public function setShowLabel( $setting ) {
-    $this->template->showLabel = $setting;
+  public function setParams( $params ) {
+    $this->params = $params;
+    $this->setPostByParams();
+    $this->setFieldByParams();
+    $this->setTemplateByParams();
   }
 
-  public function showLabel() {
-    return $this->template->showLabel;
+  public function setFieldByParams() {
+    if( array_key_exists( 'post', $this->params )) {
+      $this->setField( $this->params['name'], $this->params['post'] );
+    } else {
+      $this->setField( $this->params['name'] );
+    }
   }
 
   public function setField( $fieldName, $postID ) {
@@ -190,12 +194,20 @@ class AcfRender {
     $template->name = $this->templateName( $templateSettings );
     $template->filename = $this->templateFilename( $templateSettings );
     $template->singleFile = $singleFile;
+    $template->params = $this->loadTemplateParams();
     return $template;
   }
 
-  public function setTemplateByParams( $params ) {
-    if( array_key_exists( 'template', $params )) {
-      $this->setTemplate( $params['template'] );
+  public function loadTemplateParams() {
+    unset( $this->params['name'] );
+    unset( $this->params['post'] );
+    unset( $this->params['template'] );
+    return $this->params;
+  }
+
+  public function setTemplateByParams() {
+    if( array_key_exists( 'template', $this->params )) {
+      $this->setTemplate( $this->params['template'] );
     } else {
       $this->setTemplateAuto();
     }

@@ -1,8 +1,8 @@
-<div class="acf-field acf-field-checkbox col-md-12">
+<div class="acf-template acf-template-checkbox">
   <div class="acf-checkbox-values">
     <?php
       $vals = $template->getFieldValue( $field );
-      if( is_array($vars) && count($vals) >= 1 ) {
+      if( !empty($vals)) {
       foreach( $vals as $val ):
     ?>
       <div class="acf-checkbox-value">
@@ -10,7 +10,7 @@
       </div>
     <?php endforeach; } else { ?>
       <div class="acf-checkbox-value acf-checkbox-empty">
-        <?php print "No value selected."; ?>
+        <?php print $template->emptyMessage; ?>
       </div>
     <?php } ?>
   </div>

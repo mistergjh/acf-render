@@ -1,3 +1,3 @@
-<div class="acf-field col-md-12">
+<div class="acf-template acf-template-date">
   <?php print $template->getFieldValue( $field ); ?>
 </div>

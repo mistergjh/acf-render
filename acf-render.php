@@ -26,30 +26,14 @@ class ACFRenderPlugin {
   }
 
   public function acfRenderShortcode( $params ) {
-
     // check if name exists
     if( !is_array( $params ) || !array_key_exists( 'name', $params )){
       return false;
     }
-
     // render field
     $r = new AcfRender;
-    if( array_key_exists( 'post', $params )) {
-      $r->setField( $params['name'], $params['post'] );
-    } else {
-      $r->setField( $params['name'] );
-    }
-
-    // set template
-    $r->setTemplateByParams( $params );
-
-    // set label show
-    $r->setLabelShowByParams( $params );
-
-    var_dump($r);
-
+    $r->setParams( $params );
     return $r->render();
-
   }
 
 }

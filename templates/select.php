@@ -1,4 +1,4 @@
-<div class="acf-field acf-field-checkbox col-md-12">
+<div class="acf-template acf-template-select">
   <div class="acf-checkbox-values">
     <?php
       $vals = $template->getFieldValue( $field );

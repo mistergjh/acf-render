@@ -1,4 +1,4 @@
-<div class="acf-field acf-field-$templatese col-md-12">
+<div class="acf-template acf-template-true-false">
   <?php
     if( $template->getFieldValue( $field ) ) {
       print 'true';

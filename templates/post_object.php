@@ -1,4 +1,4 @@
-<div class="acf-field col-md-12">
+<div class="acf-template acf-template-post-object">
   <?php
 
     $post_object = $template->getFieldValue( $field );

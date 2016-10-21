@@ -4,7 +4,7 @@ Donate link: http://goldhat.ca/donate/
 Tags: acf, acf theme, acf template, acf fields
 Requires at least: 4.0
 Tested up to: 4.6
-Stable tag: 1.0
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,10 +22,19 @@ Shortcode Usage Examples:
 * Specify Post ID: [acf-render name="first_name" post="89"]
 * Specify Template: [acf-render name="first_name" template="custom-text"]
 
-API, programmatic usage: see ACF Render Docs at http://goldhat.ca/acf-render-docs/
+API, programmatic usage: see ACF Render Docs at https://goldhat.ca/acf-render-docs/
+
+See demo usage at https://goldhat.ca/acf-render-docs/acf-render-demo/
 
 == Installation ==
 
 1. Upload the plugin files to the `/wp-content/plugins/plugin-name` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress
 3. Add an [acf-render name="acf_field_name"] shortcode to a post or anywhere shortcodes are used.
+
+== Screenshots ==
+
+1.
+2.
+3.
+4.

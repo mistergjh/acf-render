@@ -42,7 +42,7 @@ class AcfRender {
     }
   }
 
-  public function setField( $fieldName, $postID ) {
+  public function setField( $fieldName, $postID = false ) {
 
     if( !$postID ) {
       global $post;

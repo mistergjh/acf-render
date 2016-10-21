@@ -9,22 +9,26 @@ class AcfRenderTemplateDetect {
   public function registerDetectedTemplates( $templates ) {
     $td = get_template_directory();
     $tdc = get_stylesheet_directory();
-    
-    $newTemplates = $this->getTemplates( $td );
-    foreach( $newTemplates as $nt ) {
-      $templateName = str_replace('.php', '', $nt['filename']);
-      $templates[ $templateName ] = array(
-        'location' => $this->relativeLocation( $tdc ),
-      );
-    }
 
-    if( $this->hasMultipleLocations( $td, $tdc )) {
-      $newTemplates = $this->registerTemplates( $tdc );
+    $newTemplates = $this->getTemplates( $td );
+    if( !empty($newTemplates )) {
       foreach( $newTemplates as $nt ) {
         $templateName = str_replace('.php', '', $nt['filename']);
         $templates[ $templateName ] = array(
           'location' => $this->relativeLocation( $tdc ),
         );
+      }
+    }
+
+    if( $this->hasMultipleLocations( $td, $tdc )) {
+      $newTemplates = $this->getTemplates( $tdc );
+      if( !empty($newTemplates)) {
+        foreach( $newTemplates as $nt ) {
+          $templateName = str_replace('.php', '', $nt['filename']);
+          $templates[ $templateName ] = array(
+            'location' => $this->relativeLocation( $tdc ),
+          );
+        }
       }
     }
 

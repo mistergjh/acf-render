@@ -34,7 +34,5 @@ See demo usage at https://goldhat.ca/acf-render-docs/acf-render-demo/
 
 == Screenshots ==
 
-1.
-2.
-3.
-4.
+1. Render field value with default template for current post
+2. Specify template and post to render
